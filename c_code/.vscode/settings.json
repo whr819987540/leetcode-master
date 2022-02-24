@@ -1,0 +1,17 @@
+{
+  "files.associations": {
+    "ostream": "cpp",
+    "stack": "cpp",
+    "iostream": "cpp",
+    "vector": "cpp",
+    "deque": "cpp",
+    "utility": "cpp",
+    "xtree": "cpp",
+    "system_error": "cpp",
+    "type_traits": "cpp",
+    "xlocnum": "cpp",
+    "xtr1common": "cpp",
+    "ios": "cpp",
+    "queue": "cpp"
+  }
+}
