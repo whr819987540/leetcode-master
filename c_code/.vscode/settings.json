@@ -12,6 +12,7 @@
     "xlocnum": "cpp",
     "xtr1common": "cpp",
     "ios": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "algorithm": "cpp"
   }
 }
