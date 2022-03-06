@@ -1,4 +1,4 @@
-// 求二叉树的最小深度
+// 求二叉树的最大深度
 
 #include <queue>
 #include <vector>
@@ -11,11 +11,10 @@ typedef struct TreeNode
     TreeNode() : val(0), left(nullptr), right(nullptr){};
     TreeNode(int val) : val(0), left(nullptr), right(nullptr){};
     TreeNode(int val, TreeNode *left, TreeNode *right) : val(val), left(left), right(right){};
-} TreeNode;
+} node;
 
 // 迭代-广度优先遍历
-// 如果某个结点的左右孩子都是null，该节点为叶子结点
-// 即返回深度
+// 也就是处理的层数
 class Solution
 {
 public:
@@ -26,10 +25,6 @@ public:
         if (root != nullptr)
         {
             my_queue.push(root);
-        }
-        else
-        {
-            return 0;
         }
 
         TreeNode *p;
@@ -45,49 +40,59 @@ public:
                     my_queue.push(p->left);
                 if (p->right)
                     my_queue.push(p->right);
-                // 找到叶子结点
-                if (p->left == nullptr && p->right == nullptr)
-                {
-                    return depth + 1;
-                }
             }
             depth++;
         }
-        return 0;
+        return depth;
     }
 };
 
-// 递归
+// 递归-后序遍历
+// 实际上是处理高度
 class NewSolution
 {
 public:
-    int minDepth(TreeNode *root)
+    int maxDepth(TreeNode *root)
     {
-        // 空节点
         if (root == nullptr)
         {
             return 0;
         }
-        // 叶子结点
-        else if (root->left == nullptr && root->right == nullptr)
-        {
-            return 1;
-        }
-
         else
         {
-            int min_depth = INT_MAX;
-            // 处理左子树
-            if (root->left)
-            {
-                min_depth = min(min_depth, minDepth(root->left));
-            }
-            // 处理右子树
-            if (root->right)
-            {
-                min_depth = min(min_depth, minDepth(root->right));
-            }
-            return min_depth + 1;
+            int left = maxDepth(root->left);
+            int right = maxDepth(root->right);
+            return left > right ? left + 1 : right + 1;
         }
+    }
+};
+
+// 递归-前序遍历
+class Solution
+{
+public:
+    int maxDepth(TreeNode *root)
+    {
+        max_depth = 0;
+        getDepth(root, 1);
+        return max_depth;
+    }
+
+    int max_depth;
+    // 遍历，传入参数为结点+该节点的深度
+    // 为什么能这样传参？因为根节点的深度是已知的
+    void getDepth(node *root, int depth)
+    {
+        // 空结点不更新最大值
+        if (root == nullptr)
+        {
+            return;
+        }
+        // 当前结点的处理就是更新max_depth
+        max_depth = depth > max_depth ? depth : max_depth;
+        // 处理左右孩子，前序遍历
+        // 当前结点的深度为depth，左右孩子的深度为depth+1,或者不更新（为空时）
+        getDepth(root->left, depth + 1);
+        getDepth(root->right, depth + 1);
     }
 };

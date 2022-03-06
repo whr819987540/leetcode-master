@@ -13,6 +13,9 @@
     "xtr1common": "cpp",
     "ios": "cpp",
     "queue": "cpp",
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "xutility": "cpp",
+    "xiosbase": "cpp",
+    "xstring": "cpp"
   }
 }

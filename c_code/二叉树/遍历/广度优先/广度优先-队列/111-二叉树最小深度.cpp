@@ -1,4 +1,4 @@
-// 求二叉树的最大深度
+// 求二叉树的最小深度
 
 #include <queue>
 #include <vector>
@@ -14,19 +14,20 @@ typedef struct TreeNode
 } TreeNode;
 
 // 迭代-广度优先遍历
-// 也就是处理的层数
+// 如果某个结点的左右孩子都是null，该节点为叶子结点
+// 即返回深度
 class Solution
 {
 public:
     int maxDepth(TreeNode *root)
     {
-        queue<TreeNode *> my_queue;
-        int depth = 0;
-        if (root != nullptr)
+        if (root == nullptr)
         {
-            my_queue.push(root);
+            return 0;
         }
-
+        queue<TreeNode *> my_queue;
+        my_queue.push(root);
+        int depth = 0;
         TreeNode *p;
         int size;
         while (!my_queue.empty())
@@ -40,10 +41,15 @@ public:
                     my_queue.push(p->left);
                 if (p->right)
                     my_queue.push(p->right);
+                // 找到叶子结点
+                if (p->left == nullptr && p->right == nullptr)
+                {
+                    return depth + 1;
+                }
             }
             depth++;
         }
-        return depth;
+        return 0;
     }
 };
 
@@ -51,17 +57,33 @@ public:
 class NewSolution
 {
 public:
-    int maxDepth(TreeNode *root)
+    int minDepth(TreeNode *root)
     {
+        // 空节点
         if (root == nullptr)
         {
             return 0;
         }
+        // 叶子结点
+        else if (root->left == nullptr && root->right == nullptr)
+        {
+            return 1;
+        }
+
         else
         {
-            int left = maxDepth(root->left);
-            int right = maxDepth(root->right);
-            return left > right ? left + 1 : right + 1;
+            int min_depth = INT_MAX;
+            // 处理左子树
+            if (root->left)
+            {
+                min_depth = min(min_depth, minDepth(root->left));
+            }
+            // 处理右子树
+            if (root->right)
+            {
+                min_depth = min(min_depth, minDepth(root->right));
+            }
+            return min_depth + 1;
         }
     }
 };
