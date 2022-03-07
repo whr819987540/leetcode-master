@@ -16,6 +16,8 @@
     "algorithm": "cpp",
     "xutility": "cpp",
     "xiosbase": "cpp",
-    "xstring": "cpp"
+    "xstring": "cpp",
+    "list": "cpp",
+    "limits": "cpp"
   }
 }

@@ -16,4 +16,8 @@ int main()
     r.push_back(2);
     r.pop_back();
     cout << r[0] << endl;
+
+    string a = "abc";
+    a.erase(a.end() - 1);
+    cout << a << endl;
 }

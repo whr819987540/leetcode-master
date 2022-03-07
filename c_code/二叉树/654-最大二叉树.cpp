@@ -44,3 +44,40 @@ public:
         return root;
     }
 };
+
+// 递归+索引vector
+class Solution
+{
+public:
+    TreeNode *constructMaximumBinaryTree(vector<int> &nums)
+    {
+        if (nums.empty())
+        {
+            return nullptr;
+        }
+        return func(nums, 0, nums.size());
+    }
+
+    node *func(vector<int> &nums, int start, int end)
+    {
+        if (start >= end)
+        {
+            return nullptr;
+        }
+        // 首先找到最大值的索引
+        int max = nums[start], index = start;
+        for (int i = start + 1; i < end; i++)
+        {
+            if (nums[i] > max)
+            {
+                max = nums[i], index = i;
+            }
+        }
+        // 根节点
+        node *root = new node(max);
+        // 左右子树
+        root->left = func(nums, start, index);
+        root->right = func(nums, index + 1, end);
+        return root;
+    }
+};
