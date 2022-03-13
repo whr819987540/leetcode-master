@@ -20,6 +20,7 @@
     "list": "cpp",
     "limits": "cpp",
     "map": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "string": "cpp"
   }
 }
