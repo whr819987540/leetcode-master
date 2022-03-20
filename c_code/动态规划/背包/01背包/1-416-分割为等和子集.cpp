@@ -68,6 +68,7 @@ public:
 // n=sum/2,values即为数值，weights也为数值
 // 检查背包重量为n时，能否放到价值为n的物品（不可能超过n，因为每个物品的weight=value）
 
+// 二维数组
 // 1、数组含义：dp[i][j]表示考虑0-i个物品，最大重量为j时的最大价值
 // 2、递推公式：
 // if j>=weights[i], dp[i][j] = max(dp[i-1][j], dp[i-1][j-weight[i]]+values[i])
@@ -142,16 +143,72 @@ public:
     }
 };
 
+// 一维数组
+// 1、数组含义：dp[j]表示重量为j时的最大价值
+// 2、递推公式：dp[j] = max( dp[j], dp[j-weight] + value)
+// 3、初始化：还没有遍历物品，所以价值都为0
+// 4、遍历顺序：物品递增，重量递减
+// 最后，检查dp[n]==n
+class Solution2
+{
+public:
+    bool canPartition(vector<int> &nums)
+    {
+        int sum = sumCalculate(nums);
+        if (sum % 2) //奇数
+        {
+            return false;
+        }
+        else
+        {
+            sum = sum / 2;
+        }
+
+        vector<int> dp(sum + 1, 0);
+        for (int i = 0; i < nums.size(); i++)
+        {
+            for (int j = sum; j >= nums[i]; j--)
+            {
+                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+            }
+        }
+        return dp[sum] == sum;
+    }
+    int sumCalculate(const vector<int> &nums)
+    {
+        int res = 0;
+        for (auto num : nums)
+        {
+            res += num;
+        }
+        return res;
+    }
+};
 int main()
 {
-    Solution1 s;
     {
-        vector<int> data{1, 5, 11, 5};
-        cout << s.canPartition(data) << endl;
+        Solution1 s;
+        {
+            vector<int> data{1, 5, 11, 5};
+            cout << s.canPartition(data) << endl;
+        }
+
+        {
+            vector<int> data{1, 2, 3, 5};
+            cout << s.canPartition(data) << endl;
+        }
     }
 
     {
-        vector<int> data{1, 2, 3, 5};
-        cout << s.canPartition(data) << endl;
+        Solution2 s;
+        {
+            vector<int> data{1, 5, 11, 5};
+            cout << s.canPartition(data) << endl;
+        }
+
+        {
+            vector<int> data{1, 2, 3, 5};
+            cout << s.canPartition(data) << endl;
+        }
     }
 }

@@ -21,6 +21,8 @@
     "limits": "cpp",
     "map": "cpp",
     "set": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "sstream": "cpp",
+    "strstream": "cpp"
   }
 }

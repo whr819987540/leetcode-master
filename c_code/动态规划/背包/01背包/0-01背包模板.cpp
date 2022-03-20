@@ -14,16 +14,20 @@ class Solution
 public:
     int bag(vector<int> &values, vector<int> &weights, int n)
     {
-        vector<vector<int>> dp(values.size() + 1, vector<int>(n + 1, 0));
+        // 这里注意，应该是values.size()*(n+1)维矩阵
+        // 因为values对应物品，本身就从0开始
+        // 而背包重量为n，从0开始要+1
+        vector<vector<int>> dp(values.size(), vector<int>(n + 1, 0));
         // 0号物品
         for (int weight = weights[0]; weight <= n; weight++)
         {
             dp[0][weight] = values[0];
         }
-
-        for (int item = 1; item <= values.size(); item++)
+        // 物品从1开始，因为0已经被初始化了
+        for (int item = 1; item < values.size(); item++)
         {
-            for (int weight = 0; weight <= n; weight++)
+            // 重量从1开始，0已被初始化
+            for (int weight = 1; weight <= n; weight++)
             {
                 if (weight >= weights[item])
                 {
@@ -36,16 +40,52 @@ public:
                 }
             }
         }
-        return dp[values.size()][n];
+        return dp[values.size() - 1][n];
+    }
+};
+
+// 1、数组含义：dp[j]表示背包容量为i时，背包的最大价值。
+// - 此时怎么知道考虑到哪个物品呢？外层循环遍历物品
+// 2、递推公式：dp[j] = max(dp[j] , dp[j-weight] + value)
+// 3、初始化：初始化还没有开始遍历物品，所以不考虑价值，价值都为0
+// 4、遍历顺序：物品递增，重量递减
+class Solution2
+{
+public:
+    int bag(vector<int> &values, vector<int> &weights, int n)
+    {
+        vector<int> dp(n + 1, 0);
+        for (int i = 0; i < values.size(); i++)
+        {
+            // 不需要j>=0
+            // 因为j<weights[i]时，内层循环会保留dp[j]的值
+            // 相当于拷贝了一次数组
+            for (int j = n; j >= weights[i]; j--)
+            {
+                dp[j] = max(dp[j], dp[j - weights[i]] + values[i]);
+            }
+        }
+        return dp[n];
     }
 };
 
 int main()
 {
-    Solution s;
-    vector<int> weight = {1, 3, 4};
-    vector<int> value = {15, 20, 30};
-    int bagweight = 4;
-    int res = s.bag(value, weight, bagweight);
-    cout << res << endl;
+    {
+        Solution s;
+        vector<int> weight = {1, 3, 4};
+        vector<int> value = {15, 20, 30};
+        int bagweight = 4;
+        int res = s.bag(value, weight, bagweight);
+        cout << res << endl;
+    }
+
+    {
+        Solution2 s;
+        vector<int> weight = {1, 3, 4};
+        vector<int> value = {15, 20, 30};
+        int bagweight = 4;
+        int res = s.bag(value, weight, bagweight);
+        cout << res << endl;
+    }
 }

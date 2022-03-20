@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 using namespace std;
 
 // 1、数组含义：dp[i]表示
@@ -9,7 +10,7 @@ using namespace std;
 // 4、遍历顺序：
 class Solution
 {
-    public:
+public:
 };
 
 int main()
