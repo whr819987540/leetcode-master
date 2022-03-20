@@ -138,6 +138,78 @@ public:
     }
 };
 
+// 一维数组
+// sum = x + y, x为前面将要补+的数之和，y为将要前面补-的数之和
+// target = x - y，target是表达式的计算结果
+// x = (sum + target) / 2
+// 等价于在原数组中找到和为x的数的方法数
+
+// nums = weights = values
+// 1、数组含义：dp[j]表示可组成和为j的方法数
+// 2、递推公式：dp[j] = dp[j] + dp[j - nums[i]]
+// 前者为不放入nums[i]，使得和为j的方法数；后者为不放入
+// 3、初始化：对于第0个物品
+// 若nums[0]!=0，则dp[0] = 1（不放物品0），dp[nums[0]] = 1（放物品0）
+// 若nums[0] == 0，则dp[nums[0]] = 2。实际上就是上面两种的加和
+// 或者不考虑物品时，使得和为0的方法数为1，即什么都不放dp[0]=1
+// 4、遍历顺序：物品递增，重量递减
+// 最后返回dp[x]，表示考虑所有数字后，使和为x的方法数
+class Solution2
+{
+public:
+    int findTargetSumWays(vector<int> &nums, int target)
+    {
+        int sum = get_sum(nums);
+        if (abs(target) > sum) // 表达式的值越界
+        {
+            return 0;
+        }
+        else if ((target + sum) % 2) // 2*x为奇数
+        {
+            return 0;
+        }
+
+        int n = (target + sum) / 2;
+        vector<int> dp(n + 1, 0);
+        // 第一种初始化
+        dp[0]++;          //表示不放入物品0
+        if (nums[0] <= n) // 表示放入物品0，但0的重量可能超过最大重量，对应于下面内层for循环的条件，此时为0
+        {
+            dp[nums[0]]++;
+        }
+        // display(dp);
+        for (int i = 1; i < nums.size(); i++)
+        {
+            for (int j = n; j >= nums[i]; j--)
+            {
+                // 前者表示不放，后者表示放
+                dp[j] = dp[j] + dp[j - nums[i]];
+            }
+            // display(dp);
+        }
+        return dp[n];
+    }
+    int get_sum(const vector<int> &stones)
+    {
+        int sum = 0;
+        for (auto stone : stones)
+        {
+            sum += stone;
+        }
+        return sum;
+    }
+    void display(const vector<int> &data)
+    {
+        for (auto i : data)
+        {
+            cout << i << " ";
+        }
+        cout << "----------\n";
+    }
+};
+
+
+
 int main()
 {
     {
@@ -147,12 +219,24 @@ int main()
         cout << res << endl;
     }
 
-    // {
-    //     Solution s;
-    //     vector<int> data{7,0,3,9,9,9,1,7,2,3};
-    //     int res = s.findTargetSumWays(data, 6);
-    //     cout << res << endl;
-    // }
+    {
+        Solution2 s;
+        vector<int> data{1, 1, 1, 1, 1};
+        int res = s.findTargetSumWays(data, 3);
+        cout << res << endl;
+    }
+    {
+        Solution s;
+        vector<int> data{7, 0, 3, 9, 9, 9, 1, 7, 2, 3};
+        int res = s.findTargetSumWays(data, 6);
+        cout << res << endl;
+    }
+    {
+        Solution2 s;
+        vector<int> data{7, 0, 3, 9, 9, 9, 1, 7, 2, 3};
+        int res = s.findTargetSumWays(data, 6);
+        cout << res << endl;
+    }
 
     // {
     //     Solution s;
