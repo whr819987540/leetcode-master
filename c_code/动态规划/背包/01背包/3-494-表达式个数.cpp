@@ -96,7 +96,7 @@ public:
         {
             dp[0][nums[0]] = 1;
         }
-        display(dp);
+        // display(dp);
         // 遍历
         for (int i = 1; i < dp.size(); i++)
         {
@@ -108,7 +108,7 @@ public:
                 {
                     dp[i][j] += dp[i - 1][j - nums[i]];
                 }
-                display(dp);
+                // display(dp);
             }
         }
         // 考虑所有商品，且背包重量达到(sum+target)/2
@@ -208,7 +208,55 @@ public:
     }
 };
 
+// 另一种初始化方法
+// 不考虑任何数字，只有让和为0才有一种方法，和为其他值都没有方法
+class Solution3
+{
+public:
+    int findTargetSumWays(vector<int> &nums, int target)
+    {
+        int sum = get_sum(nums);
+        if (abs(target) > sum) // 表达式的值越界
+        {
+            return 0;
+        }
+        else if ((target + sum) % 2) // 2*x为奇数
+        {
+            return 0;
+        }
 
+        int n = (target + sum) / 2;
+        vector<int> dp(n + 1, 0);
+        // 第二种初始化
+        dp[0] = 1; // 不考虑任何数字，让和为0有一种方法
+        for (int i = 0; i < nums.size(); i++)
+        {
+            for (int j = n; j >= nums[i]; j--)
+            {
+                // 前者表示不放，后者表示放
+                dp[j] = dp[j] + dp[j - nums[i]];
+            }
+        }
+        return dp[n];
+    }
+    int get_sum(const vector<int> &stones)
+    {
+        int sum = 0;
+        for (auto stone : stones)
+        {
+            sum += stone;
+        }
+        return sum;
+    }
+    void display(const vector<int> &data)
+    {
+        for (auto i : data)
+        {
+            cout << i << " ";
+        }
+        cout << "----------\n";
+    }
+};
 
 int main()
 {
@@ -225,6 +273,13 @@ int main()
         int res = s.findTargetSumWays(data, 3);
         cout << res << endl;
     }
+
+    {
+        Solution3 s;
+        vector<int> data{1, 1, 1, 1, 1};
+        int res = s.findTargetSumWays(data, 3);
+        cout << res << endl;
+    }
     {
         Solution s;
         vector<int> data{7, 0, 3, 9, 9, 9, 1, 7, 2, 3};
@@ -237,11 +292,10 @@ int main()
         int res = s.findTargetSumWays(data, 6);
         cout << res << endl;
     }
-
-    // {
-    //     Solution s;
-    //     vector<int> data{0, 4, 6, 0, 3, 2, 6, 9, 4, 1};
-    //     int res = s.findTargetSumWays(data, 3);
-    //     cout << res << endl;
-    // }
+    {
+        Solution3 s;
+        vector<int> data{7, 0, 3, 9, 9, 9, 1, 7, 2, 3};
+        int res = s.findTargetSumWays(data, 6);
+        cout << res << endl;
+    }
 }
