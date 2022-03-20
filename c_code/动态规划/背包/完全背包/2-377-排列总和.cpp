@@ -47,10 +47,52 @@ public:
     }
 };
 
+// dp
+// 1、数组含义：dp[i]表示使得和为i的排列数
+// 2、递推公式：dp[i] = dp[i] + dp[i-nums]
+// 3、初始化：dp[0] = 1，不考虑任何数字时，要使和为0，就是一个数都不放
+// 4、遍历顺序：可以重复选取数字，是完全背包，背包容量递增
+// 是排列问题，需要重复考虑物品顺序，所以先遍历背包容量，再遍历物品
+class Solution2
+{
+public:
+    int combinationSum4(vector<int> &nums, int target)
+    {
+        vector<int> dp(target + 1, 0);
+        dp[0] = 1;
+        // 先遍历背包容量，从大到小
+        // 背包容量从哪儿开始？
+        // 如果题目规定物品的重量都是正数，没必要从0开始，因为0时肯定放不下物品
+        // 如果重量可以为0，则遇到为0的物品，dp[i] += dp[i-0]即dp[i] = dp[i]*2
+        // 还是修改为0比较稳妥
+        for (int j = 0; j <= target; j++)
+        {
+            // 再遍历物品
+            for (int i = 0; i < nums.size(); i++)
+            {
+                if (j >= nums[i])
+                {
+                    dp[j] = dp[j] + dp[j - nums[i]];
+                }
+                // 否则，放不进物品i，保留原值即可
+            }
+        }
+        return dp[target];
+    }
+};
+
 int main()
 {
     {
         Solution s;
+        vector<int> data{1, 2, 3};
+        int n = 4;
+        int cnt = s.combinationSum4(data, n);
+        cout << cnt << endl;
+    }
+
+    {
+        Solution2 s;
         vector<int> data{1, 2, 3};
         int n = 4;
         int cnt = s.combinationSum4(data, n);
