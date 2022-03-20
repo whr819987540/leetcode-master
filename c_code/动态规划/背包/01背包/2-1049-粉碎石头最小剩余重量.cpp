@@ -16,7 +16,8 @@ using namespace std;
 // 1、数组含义：dp[i][j]表示考虑0-i个石头，背包为j时的最大价值（不会超过j）
 // 2、递推公式：dp[i][j]=max(dp[i-1][j],dp[i-1][j-weights[i]]+values[i]) / dp[i-1][j]
 // 3、初始化：dp[i][0]=0,dp[0][j]=values[0] when j>=weights[0]
-// 4、遍历顺序：从大到小，从大到小
+// 4、遍历顺序：物品递增，重量递增
+// 最后返回sum-2*dp[stones.size()-1][n]
 
 // 和416极为相似，主要步骤相同，weights=values，背包重量=sum(weights)/2
 class Solution
