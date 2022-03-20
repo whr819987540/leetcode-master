@@ -371,10 +371,49 @@ public:
     }
 };
 
+// 二维数组（本质上是一维数组，只是背包有两个限制条件）
+// 1、数组含义：dp[i][j]表示字符0的个数不超过i，字符1的个数不超过j时，符合条件的子集中元素的最大个数
+// 2、递推公式：设此时字符串中字符0的个数为num0，字符1的个数为num1
+// dp[i][j] = max(dp[i][j]不放stri,1+dp[i-num0][j-num1]放stri)
+// 3、初始化：不考虑任何字符串时，dp[i][j]=0，因为子集必然为空
+// 4、遍历顺序：物品递增，i、j递减
+class Solution4
+{
+public:
+    int findMaxForm(vector<string> &strs, int m, int n)
+    {
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0)); //初始化
+        for (auto str : strs)
+        {
+            int num0 = get_char_num(str, '0'), num1 = get_char_num(str, '1');
+            for (int i = m; i >= num0; i--)
+            {
+                for (int j = n; j >= num1; j--)
+                {
+                    dp[i][j] = max(dp[i][j], 1 + dp[i - num0][j - num1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+    // 统计字符串中特定字符的个数
+    int get_char_num(const string &s, const char c)
+    {
+        int cnt = 0;
+        for (auto i : s)
+        {
+            if (i == c)
+            {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+};
 int main()
 {
     {
-        Solution3 s;
+        Solution4 s;
         vector<string> strs{"10", "0001", "111001", "1", "0"};
         int m = 5, n = 3;
         int res = s.findMaxForm(strs, m, n);
