@@ -108,11 +108,56 @@ public:
     }
     void display(const vector<int> &data)
     {
-        for (auto i : data)
+        // for (auto i : data)
+        // {
+        //     cout << i << " ";
+        // }
+        // cout << "\n---------------------\n";
+    }
+};
+
+// 用回溯来解决
+// 需要遍历整棵树，找到可行解path，然后更新最短路径(初始化为INT_MAX)
+// 横向遍历：硬币没有重复值，不需要剪枝
+// 纵向遍历：硬币可以重复（可以找自己），不要求顺序（不能回头）
+class Solution3
+{
+private:
+    vector<int> path;
+    int shortest_length;
+
+public:
+    int coinChange(vector<int> &coins, int amount)
+    {
+        path.clear(), shortest_length = INT_MAX;
+        backtracking(coins, amount, 0, 0);
+        return shortest_length == INT_MAX ? -1 : shortest_length;
+    }
+    // 遍历整棵树，没有返回值
+    // 不能回头，可以找自己
+    void backtracking(const vector<int> &coins, const int &amount, int left, int sum)
+    {
+        if (sum == amount)
         {
-            cout << i << " ";
+            shortest_length = min(shortest_length, int(path.size()));
+            return;
         }
-        cout << "\n---------------------\n";
+        else if (sum > amount)
+        {
+            return;
+        }
+
+        for (int i = left; i < coins.size(); i++)
+        {
+            // 当前结点
+            path.push_back(coins[i]);
+            sum += coins[i];
+            // 递归
+            backtracking(coins, amount, i, sum);
+            // 回溯
+            sum -= coins[i];
+            path.pop_back();
+        }
     }
 };
 
@@ -160,6 +205,30 @@ int main()
 
     {
         Solution2 s;
+        vector<int> data{1};
+        int n = 0;
+        int res = s.coinChange(data, n);
+        cout << res << endl;
+    }
+
+    {
+        Solution3 s;
+        vector<int> data{1, 2, 5};
+        int n = 11;
+        int res = s.coinChange(data, n);
+        cout << res << endl;
+    }
+
+    {
+        Solution3 s;
+        vector<int> data{2};
+        int n = 3;
+        int res = s.coinChange(data, n);
+        cout << res << endl;
+    }
+
+    {
+        Solution3 s;
         vector<int> data{1};
         int n = 0;
         int res = s.coinChange(data, n);
