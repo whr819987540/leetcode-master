@@ -52,6 +52,46 @@ public:
     }
 };
 
+// 1、数组含义：dp[i]表示和为i时的最小个数
+// 2、递推公式：dp[i] = min(dp[i],dp[i-square_num]+1)
+// 3、初始化：dp[0]=0，其他值为INT_MAX
+// 4、遍历顺序：一个值可以被重复选取，完全背包，背包容量递增
+// 不考虑顺序，背包容量和物品的遍历顺序不影响结果
+// 先遍历背包容量，后遍历物品
+class Solution2
+{
+public:
+    int numSquares(int n)
+    {
+        // 物品
+        vector<int> squares = generate_items(n);
+
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+
+        for (int j = 1; j <= n; j++)
+        {
+            for (int i = 0; i < squares.size(); i++)
+            {
+                if (j >= squares[i] && dp[j - squares[i]] != INT_MAX)
+                {
+                    dp[j] = min(dp[j], dp[j - squares[i]] + 1);
+                }
+            }
+        }
+        return dp[n];
+    }
+    vector<int> generate_items(int n)
+    {
+        vector<int> res;
+        for (int i = 1; i <= sqrt(n); i++)
+        {
+            res.push_back(i * i);
+        }
+        return res;
+    }
+};
+
 int main()
 {
     {
@@ -62,6 +102,19 @@ int main()
     }
     {
         Solution s;
+        int n = 13;
+        int res = s.numSquares(n);
+        printf("n=%d,res=%d\n", n, res);
+    }
+
+    {
+        Solution2 s;
+        int n = 11;
+        int res = s.numSquares(n);
+        printf("n=%d,res=%d\n", n, res);
+    }
+    {
+        Solution2 s;
         int n = 13;
         int res = s.numSquares(n);
         printf("n=%d,res=%d\n", n, res);
