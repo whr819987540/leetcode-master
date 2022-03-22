@@ -92,6 +92,62 @@ public:
     }
 };
 
+// 回溯
+// 横向遍历：没有重复值，不需要处理
+// 纵向遍历：可以重复（找自己），不可以回头（不考虑顺序）
+// 遍历整棵树，所以没有返回值
+class Solution3
+{
+public:
+    int pwd_path_length; // 当前路径长度
+    int shortest_path;   // 最短路径长度
+    // 没有必要记录路径，因为只是求一个长度
+    int numSquares(int n)
+    {
+        // 小于等于n的完全平方数
+        vector<int> squares = generate_items(n);
+
+        pwd_path_length = 0;
+        shortest_path = INT_MAX;
+
+        backtracking(squares, n, 0, 0);
+        return shortest_path;
+    }
+
+    void backtracking(const vector<int> &squares, const int &target, int sum, int left)
+    {
+        if (sum == target)
+        {
+            shortest_path = min(shortest_path, pwd_path_length);
+            return;
+        }
+        else if (sum > target)
+        {
+            return;
+        }
+
+        for (int i = left; i < squares.size(); i++)
+        {
+            // 当前结点
+            sum += squares[i];
+            pwd_path_length++;
+            // 递归
+            backtracking(squares, target, sum, i);
+            // 回溯
+            pwd_path_length--;
+            sum -= squares[i];
+        }
+    }
+    vector<int> generate_items(int n)
+    {
+        vector<int> res;
+        for (int i = 1; i <= sqrt(n); i++)
+        {
+            res.push_back(i * i);
+        }
+        return res;
+    }
+};
 int main()
 {
     {
@@ -106,7 +162,12 @@ int main()
         int res = s.numSquares(n);
         printf("n=%d,res=%d\n", n, res);
     }
-
+    {
+        Solution s;
+        int n = 203;
+        int res = s.numSquares(n);
+        printf("n=%d,res=%d\n", n, res);
+    }
     {
         Solution2 s;
         int n = 11;
@@ -115,6 +176,19 @@ int main()
     }
     {
         Solution2 s;
+        int n = 13;
+        int res = s.numSquares(n);
+        printf("n=%d,res=%d\n", n, res);
+    }
+
+    {
+        Solution3 s;
+        int n = 11;
+        int res = s.numSquares(n);
+        printf("n=%d,res=%d\n", n, res);
+    }
+    {
+        Solution3 s;
         int n = 13;
         int res = s.numSquares(n);
         printf("n=%d,res=%d\n", n, res);
