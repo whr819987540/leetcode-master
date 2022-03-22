@@ -14,9 +14,9 @@ using namespace std;
 // s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
 // false
 
-// 1、数组含义：dp[i]表示是否可以构成s的前i个字符
-// 2、递推公式：dp[i] = dp[i-len]
-// 3、初始化：dp[0]=1,其余为0
+// 1、数组含义：dp[i]表示是否可以用wordDict中的字符串构成s的前i个字符
+// 2、递推公式：dp[i] = dp[i] || dp[i-len]
+// 3、初始化：dp[0]=true,其余为false
 // 4、遍历顺序：因为物品可以被重复使用，所以背包容量递增
 // 先遍历背包容量再遍历物品
 class Solution
@@ -35,7 +35,12 @@ public:
                 // 如果匹配，则前j个字符能否被wordDict组成由dp[j-wordDict[i].size()]决定
                 if (suit(s, wordDict[i], j))
                 {
-                    dp[j] = dp[j - wordDict[i].size()];
+                    // 这里有点bug，如果从j开始往前扫描，且与物品i匹配
+                    // dp[j]的值由dp[j]和dp[j - wordDict[i].size()]共同决定
+                    // "dogs" ["dog","s","gs"]
+                    // 最后的s可行了，但是搜索到gs，dp[j-"gs".size()]又不可行
+                    // 应该取大的
+                    dp[j] = dp[j] || dp[j - wordDict[i].size()];
                 }
             }
         }
@@ -82,6 +87,14 @@ int main()
         Solution s;
         string ss = "catsandog";
         vector<string> wordDict = {"cats", "dog", "sand", "and", "cat"};
+        bool res = s.wordBreak(ss, wordDict);
+        cout << res << endl;
+    }
+
+    {
+        Solution s;
+        string ss = "dogs";
+        vector<string> wordDict = {"dog","s","gs"};
         bool res = s.wordBreak(ss, wordDict);
         cout << res << endl;
     }
