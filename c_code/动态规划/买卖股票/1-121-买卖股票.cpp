@@ -31,7 +31,7 @@ public:
 
 // 暴力解法，两层循环
 // 用两层循环来控制最大值和最小值的顺序
-class Solution
+class Solution2
 {
 public:
     int maxProfit(vector<int> &prices)
@@ -48,6 +48,31 @@ public:
     }
 };
 
+// 动态规划
+// 1、数组含义：dp[i][0]表示第i天持有股票时股票的买入价格（可能是今天买的，也可能是之前买的）
+// dp[i][1]表示第i天不持有股票（可能是i-1天也不持有，也可能是今天卖的）时的获利
+// 2、递推公式：dp[i][0] = min(dp[i-1][0], prices[i])
+// 前者表示i-1天已经持有(历史买入价格)，后者表示今天买入(当前买入价格)，选择小的
+// dp[i][1] = max(dp[i-1][1], prices[i]-dp[i][0])（获利高）
+// 3、初始化：dp[0][0]=prices[0],dp[0][1]=0
+// 4、遍历顺序：先持有然后不持有
+// 先遍历天数
+class Solution3
+{
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        vector<vector<int>> dp(prices.size(), vector<int>(2, 0));
+        dp[0][0] = prices[0];
+
+        for (int i = 1; i < prices.size(); i++)
+        {
+            dp[i][0] = min(dp[i - 1][0], prices[i]);
+            dp[i][1] = max(dp[i - 1][1], prices[i] - dp[i][0]);
+        }
+        return dp.back()[1];
+    }
+};
 int main()
 {
     Solution s;
