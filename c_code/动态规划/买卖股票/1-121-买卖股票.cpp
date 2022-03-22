@@ -29,6 +29,25 @@ public:
     }
 };
 
+// 暴力解法，两层循环
+// 用两层循环来控制最大值和最小值的顺序
+class Solution
+{
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        int max_profit = INT_MIN;
+        for (int i = 0; i < prices.size(); i++)
+        {
+            for (int j = i + 1; j < prices.size(); j++)
+            {
+                max_profit = max(max_profit, prices[j] - prices[i]);
+            }
+        }
+        return max_profit;
+    }
+};
+
 int main()
 {
     Solution s;
