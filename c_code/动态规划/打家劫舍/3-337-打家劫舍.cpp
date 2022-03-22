@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <map>
 using namespace std;
 
 struct TreeNode
@@ -38,7 +39,7 @@ public:
         {
             return 0;
         }
-        
+
         // 不放根节点
         int left = rob(root->left);   //左子树
         int right = rob(root->right); //右子树
@@ -56,6 +57,48 @@ public:
         return max(root_val, left + right);
     }
 };
+
+// 前面的后序遍历-递归超时了
+// 模拟一下就可以知道，进行了很多重复计算
+// 求根+四个孙子时计算孙子，求两个儿子时也会计算四个孙子
+// 应该用一个map来记录某个结点的最大值（根+四个孙子或两个儿子）
+// 并且因为是后序遍历，所以这个map先记录的是比较深的结点的最大值
+// 可以被比较浅的结点在计算中用到
+class Solution2
+{
+private:
+    map<node *, int> my_map;
+
+public:
+    int rob(node *root)
+    {
+        if (root == nullptr)
+        {
+            my_map[root] = 0;
+            return my_map[root];
+        }
+
+        // 不放根节点
+        // 这一部分向下搜索，同时填充map
+        int left = rob(root->left), right = rob(root->right);
+
+        // 放根节点
+        int root_val = root->val;
+        // 在计算左右儿子时，四个孙子的值肯定已经计算出来并放map里面了
+        if (root->left)
+        {
+            root_val += my_map[root->left->left] + my_map[root->left->right];
+        }
+        if (root->right)
+        {
+            root_val += my_map[root->right->left] + my_map[root->right->right];
+        }
+
+        my_map[root] = max(left + right, root_val);
+        return my_map[root];
+    }
+};
+
 
 int main()
 {
