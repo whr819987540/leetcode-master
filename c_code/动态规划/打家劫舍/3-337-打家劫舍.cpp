@@ -99,6 +99,45 @@ public:
     }
 };
 
+// 更加清晰的方法是将map只放在返回值处
+class Solution3
+{
+private:
+    map<node *, int> my_map;
+
+public:
+    int rob(node *root)
+    {
+        if (root == nullptr)
+        {
+            return 0;
+        }
+        
+        // map中有记录
+        if (my_map.find(root) != my_map.end())
+        {
+            return my_map[root];
+        }
+
+        // 不放根节点
+        int left = rob(root->left), right = rob(root->right);
+
+        // 放根节点
+        int root_val = root->val;
+        if (root->left)
+        {
+            root_val += rob(root->left->left) + rob(root->left->right);
+        }
+        if (root->right)
+        {
+            root_val += rob(root->right->left) + rob(root->right->right);
+        }
+
+        // 保存计算结果
+        my_map[root] = max(left + right, root_val);
+        return my_map[root];
+    }
+};
 
 int main()
 {
