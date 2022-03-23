@@ -19,11 +19,11 @@ public:
     int lengthOfLIS(vector<int> &nums)
     {
         // 越界检查
-        if (nums.size() == 1)
+        if (nums.size() == 0)
         {
-            return nums[0];
+            return 0;
         }
-        
+
         vector<int> dp(nums.size(), 1);
         for (int i = 1; i < nums.size(); i++)
         {
