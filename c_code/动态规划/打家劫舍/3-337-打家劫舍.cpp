@@ -112,7 +112,7 @@ public:
         {
             return 0;
         }
-        
+
         // map中有记录
         if (my_map.find(root) != my_map.end())
         {
@@ -136,6 +136,44 @@ public:
         // 保存计算结果
         my_map[root] = max(left + right, root_val);
         return my_map[root];
+    }
+};
+
+// 树形动态规划
+// 对树进行动态规划，本身要和树的遍历结合在一起
+// 本题选择后序遍历，因为根节点的结果依赖于儿子和孙子
+// 1、数组含义：dp[0]表示偷当前结点的最大值，dp[1]表示不偷当前结点的最大值
+// 注意，在遍历这棵树之前，无法知道所有结点
+// 所以不能像背包问题一样提前定义好一个二维数组，然后用横坐标来表示物品
+// 只能将计算结果逐步通过递归的返回值送给上层结点
+// 2、递推公式：
+// 3、初始化：dp[0]=dp[1]=0
+// 4、遍历顺序：后序遍历
+class Solution4
+{
+public:
+    int rob(node *root)
+    {
+        vector<int> res = postOrderTraverse(root);
+        return max(res[0], res[1]);
+    }
+
+    vector<int> postOrderTraverse(node *root)
+    {
+        if (root == nullptr)
+        {
+            return {0, 0};
+        }
+        // 左右子树偷与不偷根节点的最大值
+        vector<int> left = postOrderTraverse(root->left);
+        vector<int> right = postOrderTraverse(root->right);
+
+        // 不偷根节点，左右子树的根节点可以偷也可以不偷
+        int val1 = max(left[0], left[1]) + max(right[0], right[1]);
+        // 偷根节点，不能偷左右子树的根节点
+        int val2 = root->val + left[0] + right[0];
+
+        return {val1, val2};
     }
 };
 
