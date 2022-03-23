@@ -18,6 +18,12 @@ class Solution
 public:
     int lengthOfLIS(vector<int> &nums)
     {
+        // 越界检查
+        if (nums.size() == 1)
+        {
+            return nums[0];
+        }
+        
         vector<int> dp(nums.size(), 1);
         for (int i = 1; i < nums.size(); i++)
         {
@@ -29,7 +35,9 @@ public:
                 }
             }
         }
-        return dp.back();
+        // 最后一个元素不一定是最长递增子序列的结束位置
+        // 所以dp.back()不对
+        return *max_element(dp.begin(), dp.end());
     }
 };
 
