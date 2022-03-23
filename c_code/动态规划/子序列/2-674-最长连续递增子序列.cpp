@@ -33,7 +33,36 @@ public:
         return *max_element(dp.begin(), dp.end());
     }
 };
-
+// 贪心
+class Solution2
+{
+public:
+    int findLengthOfLCIS(vector<int> &nums)
+    {
+        if (nums.size() == 0)
+        {
+            return 0;
+        }
+        int pwd_length = 1, max_legnth = 1;
+        for (int i = 1; i < nums.size(); i++)
+        {
+            if (nums[i] > nums[i - 1])
+            {
+                pwd_length++;
+            }
+            else
+            {
+                max_legnth = max(max_legnth, pwd_length);
+                // 重置pwd_length
+                pwd_length = 1;
+            }
+        }
+        // 可能一直递增，所以退出循环时还需要更新一下
+        // [1,3,4,5]
+        max_legnth = max(max_legnth, pwd_length);
+        return max_legnth;
+    }
+};
 int main()
 {
     {
