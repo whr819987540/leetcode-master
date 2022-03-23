@@ -54,10 +54,15 @@ public:
     }
 };
 
+// 压缩为一维数组
 // 注意递推公式dp[i][j] = dp[i - 1][j - 1] + 1;
 // 下一行在计算时用到前一行的第j-1个值
 // 可以考虑压缩为一维数组然后递减遍历
 // 为什么可行？因为不会用到当前一行的值
+// 1、数组含义：dp[j+1]表示第二个数组以j结尾时，公共子数组的最长长度
+// 2、递推公式：如果nums1[i]!=nums2[j]则dp[j+1]=0(这里不同于二维数组，必须显式置零),否则dp[j+1]=dp[j]+1
+// 3、初始化：dp[0]=0
+// 4、遍历顺序：递减
 class Solution2
 {
 public:
@@ -76,8 +81,17 @@ public:
                     dp[j + 1] = dp[j] + 1;
                     max_length = max(max_length, dp[j + 1]);
                 }
+                // 这里是一维数组和二维数组的区别
+                // 一维数组如果遇到nums1[i]!=nums2[j]，应该将dp[j+1]显式置零
+                // 不能让上一行的值代替本行的值，因为以nums1[i]和nums2[j]结尾的数组，最后一个值不相同
+                // 而二维数组不需要重复利用一块空间，所以不需要显式置零（因为都初始化为0）
+                else
+                {
+                    dp[j + 1] = 0;
+                }
             }
         }
+
         return max_length;
     }
 };
@@ -93,6 +107,13 @@ int main()
     {
         Solution s;
         vector<int> nums1{0, 0, 0, 0}, nums2{0, 0, 0, 7};
+        cout << s.findLength(nums1, nums2) << endl;
+    }
+
+    {
+        Solution2 s;
+        vector<int> nums1{1, 0, 0, 0, 1};
+        vector<int> nums2{1, 0, 0, 1, 1};
         cout << s.findLength(nums1, nums2) << endl;
     }
 }
