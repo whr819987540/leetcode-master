@@ -38,7 +38,7 @@ public:
 // 2、递推公式：dp[i] = dp[i-1] + dp[i-2] + dp[i-m]
 // 3、初始化：dp[0] = 1
 // 4、遍历顺序：先背包容量（递增），再物品
-class Solution
+class Solution2
 {
 public:
     int climbStairs(int n, int m)
@@ -61,5 +61,12 @@ public:
 
 int main()
 {
-    Solution s;
+    {
+        Solution s;
+        int res1 = s.climbStairs(10);
+        cout << "res1:" << res1 << endl;
+        Solution2 s2;
+        int res2 = s2.climbStairs(10, 2);
+        cout << "res2:" << res2 << endl;
+    }
 }
