@@ -58,7 +58,7 @@ public:
 // 下一行在计算时用到前一行的第j-1个值
 // 可以考虑压缩为一维数组然后递减遍历
 // 为什么可行？因为不会用到当前一行的值
-class Solution
+class Solution2
 {
 public:
     int findLength(vector<int> &nums1, vector<int> &nums2)
