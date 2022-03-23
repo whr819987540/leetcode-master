@@ -58,7 +58,7 @@ private:
 // 为什么能这样？因为虽然dp数组定义为以j结尾，但是压缩后，可以不以j结尾
 // 因为dp数组还用来记录历史结果
 // 3、初始化：0
-// 4、遍历顺序：递增，递增
+// 4、遍历顺序：递增，递减
 class Solution2
 {
 public:
@@ -69,7 +69,9 @@ public:
 
         for (int i = 0; i < text1.size(); i++)
         {
-            for (int j = 0; j < text2.size(); j++)
+            // 应该递减
+            // 如果先算小的，大的在算时会借用小的结果，而此时小的结果已经不是上一行的结果了
+            for (int j = text2.size() - 1; j >= 0; j--)
             {
                 if (text1[i] == text2[j])
                 {
