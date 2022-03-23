@@ -54,6 +54,34 @@ public:
     }
 };
 
+// 注意递推公式dp[i][j] = dp[i - 1][j - 1] + 1;
+// 下一行在计算时用到前一行的第j-1个值
+// 可以考虑压缩为一维数组然后递减遍历
+// 为什么可行？因为不会用到当前一行的值
+class Solution
+{
+public:
+    int findLength(vector<int> &nums1, vector<int> &nums2)
+    {
+        int max_length = 0;
+        // 这里要补上一个0，防止越界
+        vector<int> dp(nums2.size() + 1, 0);
+        for (int i = 0; i < nums1.size(); i++)
+        {
+            for (int j = nums2.size() - 1; j >= 0; j--)
+            {
+                if (nums2[j] == nums1[i])
+                {
+                    // 因为dp前面补了一个0
+                    dp[j + 1] = dp[j] + 1;
+                    max_length = max(max_length, dp[j + 1]);
+                }
+            }
+        }
+        return max_length;
+    }
+};
+
 int main()
 {
     {
