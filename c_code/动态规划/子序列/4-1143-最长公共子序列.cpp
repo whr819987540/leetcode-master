@@ -95,6 +95,48 @@ private:
     }
 };
 
+// 上面的二维数组之所以需要遍历二维子数组，是因为当i、j不相等时维持了零值
+// 所以要向前遍历
+// 实际上这不符合dp数组的定义
+
+// 1、数组含义：dp[i][j]表示两个字符串分别以i、j结尾时最长公共子序列的长度
+// 2、递推公式：if text1[i]==text2[j],dp[i][j]=dp[i-1][j-1]+1
+// else dp[i][j]=max(dp[i][j-1],dp[i-1][j])，也就是不考虑两个字符串中的某个最后字符
+// 3、初始化：注意到dp[0][0]会越界，所以dp数组的行列都扩充一个单位
+// 4、遍历顺序：递增，递增
+class Solution3
+{
+public:
+    int longestCommonSubsequence(string text1, string text2)
+    {
+        vector<vector<int>> dp(text1.size() + 1, vector<int>(text2.size() + 1, 0));
+
+        for (int i = 1; i <= text1.size(); i++)
+        {
+            for (int j = 1; j <= text2.size(); j++)
+            {
+                if (text1[i - 1] == text2[j - 1])
+                {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                else
+                {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        for (auto outer : dp)
+        {
+            for (auto inner : outer)
+            {
+                cout << inner << " ";
+            }
+            cout << endl;
+        }
+        return dp[text1.size()][text2.size()];
+    }
+};
+
 int main()
 {
     {
@@ -130,6 +172,12 @@ int main()
     {
         Solution2 s;
         string text1 = "abcba", text2 = "abcbcba";
+        cout << s.longestCommonSubsequence(text1, text2) << endl;
+    }
+
+    {
+        Solution3 s;
+        string text1 = "abcde", text2 = "aecd";
         cout << s.longestCommonSubsequence(text1, text2) << endl;
     }
 }
