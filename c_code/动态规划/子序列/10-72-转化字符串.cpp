@@ -64,7 +64,20 @@ public:
                 }
             }
         }
+        display_matrix(dp);
         return dp.back().back();
+    }
+
+    void display_matrix(const vector<vector<int>> &dp)
+    {
+        for (auto inner : dp)
+        {
+            for (auto outer : inner)
+            {
+                cout << outer << " ";
+            }
+            cout << endl;
+        }
     }
 };
 
