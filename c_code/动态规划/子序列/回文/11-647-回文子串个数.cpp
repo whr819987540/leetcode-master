@@ -74,76 +74,16 @@ public:
     }
 };
 
-// 1、数组含义：dp[i][j]表示字符串s以i开头、以j结尾时是否是回文串
-// 2、递推公式：
-// if s[i]==s[j],i<=j
-//      if i==j-1, dp[i][j]=true
-//      else if i==j, dp[i][j]=true
-//      else dp[i][j]=dp[i+1][j-1]
-// else dp[i][j]=false
-// 3、初始化：不用
-// 4、遍历顺序：递减(i会用到i+1)，递增(j会用到j-1)
-class Solution2
-{
-public:
-    int countSubstrings(string s)
-    {
-        vector<vector<bool>> dp(s.size(), vector<bool>(s.size()));
-        // 用一个变量来记录遍历过程中找到的回文串
-        int result = 0;
-
-        for (int i = s.size() - 1; i >= 0; i--)
-        {
-            for (int j = i; j < s.size(); j++)
-            {
-                if (s[i] == s[j])
-                {
-                    if (i == j || i == j - 1)
-                    {
-                        dp[i][j] = true;
-                    }
-                    else
-                    {
-                        dp[i][j] = dp[i + 1][j - 1];
-                    }
-                }
-                else
-                {
-                    dp[i][j] = false;
-                }
-
-                if (dp[i][j])
-                {
-                    result++;
-                }
-            }
-        }
-        return result;
-    }
-};
-
 int main()
 {
-    // {
-    //     Solution s;
-    //     string data = "abc";
-    //     cout << s.countSubstrings(data) << endl;
-    // }
-
-    // {
-    //     Solution s;
-    //     string data = "aaa";
-    //     cout << s.countSubstrings(data) << endl;
-    // }
-
     {
-        Solution2 s;
+        Solution s;
         string data = "abc";
         cout << s.countSubstrings(data) << endl;
     }
 
     {
-        Solution2 s;
+        Solution s;
         string data = "aaa";
         cout << s.countSubstrings(data) << endl;
     }
