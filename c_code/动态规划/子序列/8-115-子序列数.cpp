@@ -41,7 +41,20 @@ public:
                 }
             }
         }
+        display_matrix(dp);
         return dp[s.size()][t.size()];
+    }
+
+    void display_matrix(const vector<vector<unsigned long>> &dp)
+    {
+        for (auto inner : dp)
+        {
+            for (auto outer : inner)
+            {
+                cout << outer << " ";
+            }
+            cout << endl;
+        }
     }
 };
 
