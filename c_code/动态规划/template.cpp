@@ -11,9 +11,22 @@ using namespace std;
 class Solution
 {
 public:
+    void display(const vector<vector<int>> &dp)
+    {
+        for (auto outer : dp)
+        {
+            for (auto inner : outer)
+            {
+                cout << inner << " ";
+            }
+            cout << endl;
+        }
+    }
 };
 
 int main()
 {
-    Solution s;
+    {
+        Solution s;
+    }
 }
