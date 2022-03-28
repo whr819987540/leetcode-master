@@ -125,6 +125,38 @@ public:
     }
 };
 
+// 双指针法
+// 确定一个回文串，首先要确定中心，中心可以是一个元素如bab中的a，也可以是两个元素如baab中的aa
+// 确定中心后，向两侧检索，如果相同，则找到一个回文串
+// 时间复杂度也是n^2，但是空间复杂度是常数量级
+// 而dp的时间复杂度和空间复杂度都是n^2
+class Solution3
+{
+public:
+    int countSubstrings(string s)
+    {
+        int result = 0;
+        for (int center = 0; center < s.size(); center++)
+        {
+            result += find(s, center, center);     //中心为一个元素
+            result += find(s, center, center + 1); // 中心为两个元素
+        }
+        return result;
+    }
+
+    int find(const string &s, int left_center, int right_center)
+    {
+        int result = 0;
+        while (left_center >= 0 && right_center < s.size() && s[left_center] == s[right_center])
+        {
+            result++;
+            left_center--, right_center++;
+        }
+
+        return result;
+    }
+};
+
 int main()
 {
     // {
@@ -146,6 +178,18 @@ int main()
 
     {
         Solution2 s;
+        string data = "aaa";
+        cout << s.countSubstrings(data) << endl;
+    }
+
+    {
+        Solution3 s;
+        string data = "abc";
+        cout << s.countSubstrings(data) << endl;
+    }
+
+    {
+        Solution3 s;
         string data = "aaa";
         cout << s.countSubstrings(data) << endl;
     }
