@@ -59,7 +59,20 @@ public:
                 }
             }
         }
+        display(dp);
         return dp[0][s.size() - 1];
+    }
+
+    void display(const vector<vector<int>> &dp)
+    {
+        for (auto outer : dp)
+        {
+            for (auto inner : outer)
+            {
+                cout << inner << " ";
+            }
+            cout << endl;
+        }
     }
 };
 
