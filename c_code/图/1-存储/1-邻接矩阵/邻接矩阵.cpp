@@ -16,7 +16,7 @@ typedef int VertexType;
 // 定义二维数组的数据类型，即边的数据类型
 typedef int EdgeType;
 // 图中存储以上两个数组和顶点数、边数
-typedef struct
+typedef struct Graph
 {
     VertexType vex[MaxVertexNum];              //顶点表
     EdgeType edge[MaxVertexNum][MaxVertexNum]; // 边表
