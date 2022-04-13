@@ -57,10 +57,13 @@ public:
             {
                 int first, second;
                 sscanf(buf, "%d %d", &first, &second);
+                if (g.edge[first][second] == 0)
+                {
+                    g.edgeNum++;
+                }
                 // 注意插入一条表时，要修改两个位置的值
                 g.edge[first][second] = 1;
                 g.edge[second][first] = 1;
-                g.edgeNum++;
             }
         }
     }
@@ -87,6 +90,49 @@ class UndirectedWeightedGraph
 class DirectedUnweightedGraph
 {
 private:
+    Graph g;
+
+public:
+    DirectedUnweightedGraph()
+    {
+        // 初始化顶点表
+        cout << "input the vertex num:";
+        (cin >> g.vexNum).get();
+        // 初始化边表
+        cout << "input the edge, for example '1 2', which means there is an edge from 1 to 2. input q to quit\n";
+        char buf[4096];
+        while (1)
+        {
+            cin.getline(buf, 4095);
+            if (memcmp(buf, "q", 1) == 0)
+            {
+                break;
+            }
+            else
+            {
+                int start, end;
+                sscanf(buf, "%d %d", &start, &end);
+                // 防止重复输入
+                if (g.edge[start][end] == 0)
+                {
+                    g.edgeNum++;
+                }
+                g.edge[start][end] = 1;
+            }
+        }
+    }
+    void display_graph()
+    {
+        printf("vexNum:%d,edgeNum:%d\n", g.vexNum, g.edgeNum);
+        for (int i = 0; i < g.vexNum; i++)
+        {
+            for (int j = 0; j < g.vexNum; j++)
+            {
+                cout << g.edge[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
 };
 
 // 有向有权图
@@ -98,4 +144,7 @@ int main()
 {
     UndirectedUnweightedGraph g1;
     g1.display_graph();
+
+    DirectedUnweightedGraph g3;
+    g3.display_graph();
 }
