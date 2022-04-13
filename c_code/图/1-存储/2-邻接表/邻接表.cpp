@@ -99,6 +99,7 @@ public:
             cout << endl;
         }
     }
+
     // 释放new的EdgeNode
     ~UndirectedUnweightedGraph()
     {
@@ -116,10 +117,92 @@ public:
     }
 };
 
+// 有向无权图
+class DirectedUnweightedGraph
+{
+private:
+    Graph g;
+    // 向边表插入结点,采用头插法
+    void insert(int start, int end)
+    {
+        EdgeNode *tmp = new EdgeNode;
+        tmp->index = end;
+        tmp->next = g.vex[start].head;
+        tmp->weight = 1;
+
+        g.vex[start].head = tmp;
+    }
+
+public:
+    // 顶点表和边表初始化
+    DirectedUnweightedGraph()
+    {
+        // 顶点表初始化
+        cout << "input the vertex num:";
+        (cin >> g.vexNum).get();
+        for (int i = 0; i < g.vexNum; i++)
+        {
+            g.vex[i].vertex = i;
+            g.vex[i].head = nullptr;
+        }
+
+        // 边表初始化
+        cout << "input the edge, for example '1 2', which means there is an edge from 1 to 2. input q to quit\n";
+        char buf[4096];
+        while (1)
+        {
+            cin.getline(buf, 4096);
+            if (memcmp(buf, "q", 1) == 0)
+            {
+                break;
+            }
+            else
+            {
+                int start, end;
+                sscanf(buf, "%d %d", &start, &end);
+                insert(start, end);
+                g.edgeNum++;
+            }
+        }
+    }
+
+    void display_graph()
+    {
+        printf("vexNum:%d,edgeNum:%d\n", g.vexNum, g.edgeNum);
+        for (int i = 0; i < g.vexNum; i++)
+        {
+            EdgeNode *tmp = g.vex[i].head;
+            printf("%d->", i);
+            while (tmp)
+            {
+                printf(" %d", tmp->index);
+                tmp = tmp->next;
+            }
+            cout << endl;
+        }
+    }
+
+    // 释放new的EdgeNode
+    ~DirectedUnweightedGraph()
+    {
+        for (int i = 0; i < g.vexNum; i++)
+        {
+            EdgeNode *pwd = g.vex[i].head;
+            EdgeNode *tmp = pwd;
+            while (pwd)
+            {
+                pwd = pwd->next;
+                delete tmp;
+                tmp = pwd;
+            }
+        }
+    }
+};
+
 int main()
 {
-    UndirectedUnweightedGraph g1;
-    g1.display_graph();
+    // UndirectedUnweightedGraph g1;
+    // g1.display_graph();
     // 测试数据
     // 6
     // 1 2
@@ -129,4 +212,16 @@ int main()
     // 2 3
     // 2 4
     // 4 3
+
+    DirectedUnweightedGraph g2;
+    g2.display_graph();
+    // 7
+    // 1 2
+    // 1 4
+    // 4 2
+    // 2 5
+    // 5 4
+    // 3 5
+    // 3 6
+    // 6 6
 }
